@@ -41,5 +41,4 @@ implementa un analisis de seguridad contra vulnerabilidades que se puedan presen
 1. Clonar el repositorio
 2. Importar en Android Studio y asegurarse de configurar la firma de producción
 3. Verificar permisos y ajustar el Manifest según las recomendaciones de seguridad
-## Reporte de Vulnerabilidades El reporte detallado de las pruebas de vulnerabilidad
-realizadas se encuentra en el archivo `vulnerability_report.pdf`.
+## Reporte de Vulnerabilidades realizadas se encuentra en el archivo `vulnerability_report.pdf`.
