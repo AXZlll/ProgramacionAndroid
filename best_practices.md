@@ -1,4 +1,4 @@
-#Best Practices Implementadas
+Best Practices Implementadas
 Este documento sirve para detallar las prácticas recomendadas 
 implementadas para mejorar la seguridad de la apliacición EvaluacionACG-A0P.
 
