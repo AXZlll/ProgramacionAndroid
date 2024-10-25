@@ -34,7 +34,6 @@ implementa un analisis de seguridad contra vulnerabilidades que se puedan presen
   aunque la revisión de permisos es necesaria para asegurar su nivel de seguridad.
 
 ## Documentación
-- [Vulnerabilidades](vulnerabilities.md)
 - [Best Practices](best_practices.md)
 - [Security Tips](security_tips.md)
 - [Security Improvement Program](security_improvement_program.md)
