@@ -1,5 +1,6 @@
 package com.example.evaluacionacg;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -39,7 +40,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity:this);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -61,9 +62,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        if (ActivityCompat.checkSelfPermission(context:this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(context:this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity:this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
             return;
         }
 
@@ -76,18 +77,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void getCurrentLocation() {
-        if (ActivityCompat.checkSelfPermission(context:this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(activity:this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         Task<Location> LocationTask = fusedLocationProviderClient.getLastLocation();
-        locationTask.addOnSuccessListener(new OnSuccessListener<Location>(){
+        locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 if (location != null) {
 
-                    LatLng currentLatLng = new
+                    LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+                    if (currentLocationMarker != null) {
+                        currentLocationMarker.remove();
+                    }
+                    currentLocationMarker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title("Estas Aquí"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
                 }
+            }
+        });
+    }
+    @Override
+    public void onRequestPermissionsResult ( int requestCode, @NonNull String[] permissions,
+                                             @NonNull int[] grantResults){
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getCurrentLocation();
             }
         }
     }
